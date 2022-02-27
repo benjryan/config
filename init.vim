@@ -1,11 +1,4 @@
-"let g:ale_disable_lsp = 1
-
-" Specify a directory for plugins
-" - For Neovim: stdpath('data') . '/plugged'
-" - Avoid using standard Vim directory names like 'plugin'
-call plug#begin(stdpath('data') . '/plugged')
-
-" Make sure you use single quotes
+call plug#begin()
 "Plug 'preservim/nerdtree'
 "Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
 "Plug 'sheerun/vim-polyglot'
@@ -23,8 +16,6 @@ Plug 'jesseleite/vim-agriculture'
 Plug 'neovim/nvim-lspconfig'
 "Plug 'dense-analysis/ale'
 "Plug 'ervandew/supertab'
-
-" Initialize plugin system
 call plug#end()
 
 lua <<EOF
@@ -54,6 +45,7 @@ local on_attach = function(client, bufnr)
   vim.api.nvim_buf_set_keymap(bufnr, 'n', 'K', '<cmd>lua vim.lsp.buf.hover()<CR>', opts)
   vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
   vim.api.nvim_buf_set_keymap(bufnr, 'n', '<C-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
+  vim.api.nvim_buf_set_keymap(bufnr, 'i', '<C-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
   vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>wa', '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', opts)
   vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>wr', '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>', opts)
   vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>wl', '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>', opts)
@@ -94,7 +86,7 @@ set foldlevel=99
 "Enable folding with the spacebar
 "nnoremap <space> za
 
-map <C-n> :NERDTreeToggle<CR>
+"map <C-n> :NERDTreeToggle<CR>
 
 syntax on
 
@@ -115,7 +107,7 @@ set encoding=utf-8
 
 " air-line
 let g:airline_powerline_fonts = 1
-let g:airline_theme = 'purify'
+let g:airline_theme = 'deep_space'
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#buffer_nr_show = 1
 
@@ -156,7 +148,8 @@ set t_Co=256
 set termguicolors
 let $NVIM_TUI_ENABLE_TRUE_COLOR=1
 set background=dark
-colorscheme gruvbox
+colorscheme deep-space
+"highlight Normal guifg=#77869E guibg=#0E171F
 
 set nu rnu
 "set clipboard=unnamed
@@ -164,12 +157,13 @@ set ruler
 set showcmd
 set noswapfile
 set noshowmode
-set omnifunc=syntaxcomplete#Complete
+"set omnifunc=syntaxcomplete#Complete
 
 set backspace=indent,eol,start " let backspace delete over lines
 set autoindent
 set smartindent
-set pastetoggle=<F2> " enable paste mode
+"set pastetoggle=<F2> " enable paste mode
+nnoremap <expr> <F2> empty(filter(getwininfo(), 'v:val.quickfix')) ? ':copen<CR>' : ':cclose<CR>'
 
 set wildmenu
 set lazyredraw
@@ -177,10 +171,16 @@ set showmatch
 set incsearch
 set hlsearch
 
+inoremap <C-e> <C-x><C-o>
 nnoremap <C-h> :noh<return>
 
 " search visually selected text
 vnoremap // y/\V<C-R>=escape(@",'/\')<CR><CR>
+
+set completeopt=longest,menuone
+inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+inoremap <expr> <C-n> pumvisible() ? '<C-n>' : '<C-n><C-r>=pumvisible() ? "\<lt>Down>" : ""<CR>'
+inoremap <expr> <M-,> pumvisible() ? '<C-n>' : '<C-x><C-o><C-n><C-p><C-r>=pumvisible() ? "\<lt>Down>" : ""<CR>'
 
 " run code
 "nnoremap \ :te<enter>
@@ -188,9 +188,9 @@ vnoremap // y/\V<C-R>=escape(@",'/\')<CR><CR>
 "tnoremap <Esc> <C-\><C-n>
 
 " automatically enter insert mode on new neovim terminals
-augroup terminal
-  au TermOpen * startinsert
-augroup END
+"augroup terminal
+"  au TermOpen * startinsert
+"augroup END
 
 nnoremap <c-z> <nop>
 nnoremap <C-p> :Files<Cr>
