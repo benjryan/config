@@ -4,9 +4,12 @@ call plug#begin()
 "Plug 'sheerun/vim-polyglot'
 "Plug 'vim-syntastic/syntastic'
 "Plug 'jiangmiao/auto-pairs'
-Plug 'ryanoasis/vim-devicons'
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
+Plug 'nvim-lualine/lualine.nvim'
+Plug 'kyazdani42/nvim-web-devicons'
+Plug 'akinsho/bufferline.nvim'
+"Plug 'ryanoasis/vim-devicons'
+"Plug 'vim-airline/vim-airline'
+"Plug 'vim-airline/vim-airline-themes'
 Plug 'rafi/awesome-vim-colorschemes'
 "Plug 'neoclide/coc.nvim', {'branch': 'release'}
 "Plug 'OmniSharp/omnisharp-vim'
@@ -14,15 +17,124 @@ Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'  " General fuzzy finder
 Plug 'jesseleite/vim-agriculture'
 Plug 'neovim/nvim-lspconfig'
+Plug 'nvim-lua/plenary.nvim'
+Plug 'nvim-telescope/telescope.nvim'
+"Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+Plug 'EdenEast/nightfox.nvim' 
 "Plug 'dense-analysis/ale'
 "Plug 'ervandew/supertab'
 call plug#end()
 
+" These commands will navigate through buffers in order regardless of which mode you are using
+" e.g. if you change the order of buffers :bnext and :bprevious will not respect the custom ordering
+nnoremap <silent><a-k> :BufferLineCycleNext<CR>
+nnoremap <silent><a-j> :BufferLineCyclePrev<CR>
+nnoremap <silent><a-w> :bd<CR>
+
 lua <<EOF
-local omnisharp_bin = "c:/programs/omnisharp/OmniSharp.exe"
-require'lspconfig'.omnisharp.setup{
-    cmd = { omnisharp_bin, '--languageserver' , '--hostPID', tostring(pid) };
+local nightfox = require('nightfox')
+
+-- This function set the configuration of nightfox. If a value is not passed in the setup function
+-- it will be taken from the default configuration above
+nightfox.setup({
+  fox = "nightfox", -- change the colorscheme to use nordfox
+  styles = {
+    comments = "NONE", -- change style of comments to be italic
+    keywords = "NONE", -- change style of keywords to be bold
+    functions = "NONE" -- styles can be a comma separated list
+  },
+  inverse = {
+    match_paren = false, -- inverse the highlighting of match_parens
+  },
+  colors = {},
+  hlgroups = {
+    Todo = { fg = "${white_dm}", bg = "NONE" }, -- remove that bg changes on note/todo
+  }
+})
+
+-- Load the configuration set above and apply the colorscheme
+nightfox.load()
+EOF
+
+lua <<EOF
+--require'nvim-treesitter.install'.compilers = { "clang" }
+--
+--require'nvim-treesitter.configs'.setup {
+--  highlight = {
+--    enable = true,
+--    -- Setting this to true will run `:h syntax` and tree-sitter at the same time.
+--    -- Set this to `true` if you depend on 'syntax' being enabled (like for indentation).
+--    -- Using this option may slow down your editor, and you may see some duplicate highlights.
+--    -- Instead of true it can also be a list of languages
+--    additional_vim_regex_highlighting = false,
+--  },
+--}
+
+--require'nvim-treesitter.configs'.setup {
+--  incremental_selection = {
+--    enable = true,
+--    keymaps = {
+--      init_selection = "gnn",
+--      node_incremental = "grn",
+--      scope_incremental = "grc",
+--      node_decremental = "grm",
+--    },
+--  },
+--}
+--
+--require'nvim-treesitter.configs'.setup {
+--  indent = {
+--    enable = true
+--  }
+--}
+EOF
+
+lua <<EOF
+require('lualine').setup {
+  options = {
+    icons_enabled = true,
+    theme = 'nightfox',
+    component_separators = { left = '', right = ''},
+    section_separators = { left = '', right = ''},
+    disabled_filetypes = {},
+    always_divide_middle = true,
+  },
+  sections = {
+    lualine_a = {'mode'},
+    lualine_b = {'branch', 'diff', 'diagnostics'},
+    lualine_c = {'filename'},
+    lualine_x = {'encoding', 'fileformat', 'filetype'},
+    lualine_y = {'progress'},
+    lualine_z = {'location'}
+  },
+  inactive_sections = {
+    lualine_a = {},
+    lualine_b = {},
+    lualine_c = {'filename'},
+    lualine_x = {'location'},
+    lualine_y = {},
+    lualine_z = {}
+  },
+  tabline = {},
+  extensions = {}
 }
+EOF
+
+lua <<EOF
+require('bufferline').setup {
+  options = {
+      diagnostics = "nvim_lsp",
+      show_close_icon = false,
+      show_buffer_close_icons = false,
+      right_mouse_command = "bdelete! %d", -- can be a string | function, see "Mouse actions"
+      left_mouse_command = "buffer %d",    -- can be a string | function, see "Mouse actions"
+      middle_mouse_command = nil,          -- can be a string | function, see "Mouse actions"
+  }
+}
+
+EOF
+
+lua <<EOF
 
 -- Mappings.
 -- See `:help vim.diagnostic.*` for documentation on any of the below functions
@@ -40,10 +152,10 @@ local on_attach = function(client, bufnr)
 
   -- Mappings.
   -- See `:help vim.lsp.*` for documentation on any of the below functions
-  vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<CR>', opts)
-  vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>', opts)
+  --vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<CR>', opts)
+  --vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>', opts)
   vim.api.nvim_buf_set_keymap(bufnr, 'n', 'K', '<cmd>lua vim.lsp.buf.hover()<CR>', opts)
-  vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
+  --vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
   vim.api.nvim_buf_set_keymap(bufnr, 'n', '<C-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
   vim.api.nvim_buf_set_keymap(bufnr, 'i', '<C-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
   vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>wa', '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', opts)
@@ -52,7 +164,7 @@ local on_attach = function(client, bufnr)
   vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>D', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
   vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
   vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
-  vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
+  --vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
   vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>f', '<cmd>lua vim.lsp.buf.formatting()<CR>', opts)
 end
 
@@ -60,6 +172,7 @@ end
 -- map buffer local keybindings when the language server attaches
 --local servers = { "omnisharp-roslyn" }
 
+local omnisharp_bin = "c:/programs/omnisharp/OmniSharp.exe"
 require('lspconfig').omnisharp.setup {
     on_attach = on_attach,
     flags = { debounce_text_changes = 150 },
@@ -81,8 +194,11 @@ set splitbelow
 set splitright
 
 " Enable folding
+"set foldmethod=expr
 set foldmethod=indent
+"set foldexpr=nvim_treesitter#foldexpr()
 set foldlevel=99
+
 "Enable folding with the spacebar
 "nnoremap <space> za
 
@@ -105,42 +221,54 @@ set encoding=utf-8
 
 "inoremap <silent> ,s <C-r>=CocActionAsync('showSignatureHelp')<CR>
 
-" air-line
-let g:airline_powerline_fonts = 1
-let g:airline_theme = 'deep_space'
-let g:airline#extensions#tabline#enabled = 1
-let g:airline#extensions#tabline#buffer_nr_show = 1
+" Find files using Telescope command-line sugar.
+nnoremap <leader>ff <cmd>Telescope find_files<cr>
+nnoremap <leader>fg <cmd>Telescope live_grep<cr>
+nnoremap <leader>fb <cmd>Telescope buffers<cr>
+nnoremap <leader>fh <cmd>Telescope help_tags<cr>
+nnoremap <leader>fs <cmd>Telescope lsp_dynamic_workspace_symbols<cr>
+nnoremap <leader>fr <cmd>Telescope lsp_references<cr>
+nnoremap <leader>fd <cmd>Telescope diagnostics<cr>
+nnoremap <leader>gd <cmd>Telescope lsp_definitions<cr>
+nnoremap <leader>gi <cmd>Telescope lsp_implementations<cr>
+nnoremap <leader>fe <cmd>Telescope resume<cr>
+
+"" air-line
+"let g:airline_powerline_fonts = 1
+"let g:airline_theme = 'deep_space'
+"let g:airline#extensions#tabline#enabled = 1
+"let g:airline#extensions#tabline#buffer_nr_show = 1
 
 " move among buffers with CTRL
-map <a-k> :bnext<CR>
-map <a-j> :bprev<CR>
+"map <a-k> :bnext<CR>
+"map <a-j> :bprev<CR>
 
-if !exists('g:airline_symbols')
-    let g:airline_symbols = {}
-endif
-
-" unicode symbols
-let g:airline_left_sep = '»'
-let g:airline_left_sep = '▶'
-let g:airline_right_sep = '«'
-let g:airline_right_sep = '◀'
-let g:airline_symbols.linenr = '␊'
-let g:airline_symbols.linenr = '␤'
-let g:airline_symbols.linenr = '¶'
-let g:airline_symbols.branch = '⎇'
-let g:airline_symbols.paste = 'ρ'
-let g:airline_symbols.paste = 'Þ'
-let g:airline_symbols.paste = '∥'
-let g:airline_symbols.whitespace = 'Ξ'
-
-" airline symbols
-let g:airline_left_sep = ''
-let g:airline_left_alt_sep = ''
-let g:airline_right_sep = ''
-let g:airline_right_alt_sep = ''
-let g:airline_symbols.branch = ''
-let g:airline_symbols.readonly = ''
-let g:airline_symbols.linenr = ''
+"if !exists('g:airline_symbols')
+"    let g:airline_symbols = {}
+"endif
+"
+"" unicode symbols
+"let g:airline_left_sep = '»'
+"let g:airline_left_sep = '▶'
+"let g:airline_right_sep = '«'
+"let g:airline_right_sep = '◀'
+"let g:airline_symbols.linenr = '␊'
+"let g:airline_symbols.linenr = '␤'
+"let g:airline_symbols.linenr = '¶'
+"let g:airline_symbols.branch = '⎇'
+"let g:airline_symbols.paste = 'ρ'
+"let g:airline_symbols.paste = 'Þ'
+"let g:airline_symbols.paste = '∥'
+"let g:airline_symbols.whitespace = 'Ξ'
+"
+"" airline symbols
+"let g:airline_left_sep = ''
+"let g:airline_left_alt_sep = ''
+"let g:airline_right_sep = ''
+"let g:airline_right_alt_sep = ''
+"let g:airline_symbols.branch = ''
+"let g:airline_symbols.readonly = ''
+"let g:airline_symbols.linenr = ''
 
 set laststatus=2
 " set showtabline=2
@@ -148,7 +276,9 @@ set t_Co=256
 set termguicolors
 let $NVIM_TUI_ENABLE_TRUE_COLOR=1
 set background=dark
-colorscheme deep-space
+"colorscheme deep-space
+"colorscheme nightfox
+"let g:material_style = "deep ocean"
 "highlight Normal guifg=#77869E guibg=#0E171F
 
 set nu rnu
@@ -163,7 +293,9 @@ set backspace=indent,eol,start " let backspace delete over lines
 set autoindent
 set smartindent
 "set pastetoggle=<F2> " enable paste mode
-nnoremap <expr> <F2> empty(filter(getwininfo(), 'v:val.quickfix')) ? ':copen<CR>' : ':cclose<CR>'
+"nnoremap <expr> <c-/> empty(filter(getwininfo(), 'v:val.quickfix')) ? ':copen<CR>' : ':cclose<CR>'
+nnoremap fo :copen<CR>
+nnoremap fc :cclose<CR>
 
 set wildmenu
 set lazyredraw
@@ -177,7 +309,7 @@ nnoremap <C-h> :noh<return>
 " search visually selected text
 vnoremap // y/\V<C-R>=escape(@",'/\')<CR><CR>
 
-set completeopt=longest,menuone
+set completeopt=noselect,longest,menuone
 inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
 inoremap <expr> <C-n> pumvisible() ? '<C-n>' : '<C-n><C-r>=pumvisible() ? "\<lt>Down>" : ""<CR>'
 inoremap <expr> <M-,> pumvisible() ? '<C-n>' : '<C-x><C-o><C-n><C-p><C-r>=pumvisible() ? "\<lt>Down>" : ""<CR>'
