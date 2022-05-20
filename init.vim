@@ -13,8 +13,9 @@ Plug 'akinsho/bufferline.nvim'
 Plug 'rafi/awesome-vim-colorschemes'
 "Plug 'neoclide/coc.nvim', {'branch': 'release'}
 "Plug 'OmniSharp/omnisharp-vim'
-Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
-Plug 'junegunn/fzf.vim'  " General fuzzy finder
+Plug 'Hoffs/omnisharp-extended-lsp.nvim'
+"Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+"Plug 'junegunn/fzf.vim'  " General fuzzy finder
 Plug 'jesseleite/vim-agriculture'
 Plug 'neovim/nvim-lspconfig'
 Plug 'nvim-lua/plenary.nvim'
@@ -32,62 +33,55 @@ nnoremap <silent><a-j> :BufferLineCyclePrev<CR>
 nnoremap <silent><a-w> :bd<CR>
 
 lua <<EOF
-local nightfox = require('nightfox')
+require('telescope').setup{
+    defaults = {
+        path_display = { tail = true },
+    },
+    pickers = {
+        find_files = {
+            theme = "dropdown",
+        },
+        live_grep = {
+            theme = "dropdown",
+        },
+        buffers = {
+            theme = "dropdown",
+        },
+        lsp_dynamic_workspace_symbols = {
+            theme = "dropdown",
+        },
+        lsp_references = {
+            theme = "dropdown",
+        },
+        current_buffer_fuzzy_find = {
+            theme = "dropdown",
+        },
+    },
+}
 
 -- This function set the configuration of nightfox. If a value is not passed in the setup function
 -- it will be taken from the default configuration above
-nightfox.setup({
-  fox = "nightfox", -- change the colorscheme to use nordfox
-  styles = {
-    comments = "NONE", -- change style of comments to be italic
-    keywords = "NONE", -- change style of keywords to be bold
-    functions = "NONE" -- styles can be a comma separated list
+require('nightfox').setup({
+  options = {
+      styles = {
+          comments = "NONE", -- change style of comments to be italic
+          keywords = "NONE", -- change style of keywords to be bold
+          functions = "NONE" -- styles can be a comma separated list
+      },
+      inverse = {
+          match_paren = false, -- inverse the highlighting of match_parens
+      },
   },
-  inverse = {
-    match_paren = false, -- inverse the highlighting of match_parens
+  palettes = {},
+  groups = {
+      all = {
+          Todo = { fg = "fg1", bg = "NONE" }, -- remove that bg changes on note/todo
+      },
   },
-  colors = {},
-  hlgroups = {
-    Todo = { fg = "${white_dm}", bg = "NONE" }, -- remove that bg changes on note/todo
-  }
 })
-
--- Load the configuration set above and apply the colorscheme
-nightfox.load()
 EOF
 
-lua <<EOF
---require'nvim-treesitter.install'.compilers = { "clang" }
---
---require'nvim-treesitter.configs'.setup {
---  highlight = {
---    enable = true,
---    -- Setting this to true will run `:h syntax` and tree-sitter at the same time.
---    -- Set this to `true` if you depend on 'syntax' being enabled (like for indentation).
---    -- Using this option may slow down your editor, and you may see some duplicate highlights.
---    -- Instead of true it can also be a list of languages
---    additional_vim_regex_highlighting = false,
---  },
---}
-
---require'nvim-treesitter.configs'.setup {
---  incremental_selection = {
---    enable = true,
---    keymaps = {
---      init_selection = "gnn",
---      node_incremental = "grn",
---      scope_incremental = "grc",
---      node_decremental = "grm",
---    },
---  },
---}
---
---require'nvim-treesitter.configs'.setup {
---  indent = {
---    enable = true
---  }
---}
-EOF
+colorscheme nightfox
 
 lua <<EOF
 require('lualine').setup {
@@ -118,9 +112,7 @@ require('lualine').setup {
   tabline = {},
   extensions = {}
 }
-EOF
 
-lua <<EOF
 require('bufferline').setup {
   options = {
       diagnostics = "nvim_lsp",
@@ -131,10 +123,6 @@ require('bufferline').setup {
       middle_mouse_command = nil,          -- can be a string | function, see "Mouse actions"
   }
 }
-
-EOF
-
-lua <<EOF
 
 -- Mappings.
 -- See `:help vim.diagnostic.*` for documentation on any of the below functions
@@ -172,22 +160,20 @@ end
 -- map buffer local keybindings when the language server attaches
 --local servers = { "omnisharp-roslyn" }
 
+local lspconfig = require('lspconfig')
 local omnisharp_bin = "c:/programs/omnisharp/OmniSharp.exe"
-require('lspconfig').omnisharp.setup {
+lspconfig.omnisharp.setup {
     on_attach = on_attach,
     flags = { debounce_text_changes = 150 },
+    handlers = {
+        ["textDocument/definition"] = require('omnisharp_extended').handler,
+    },
     cmd = { omnisharp_bin, '--languageserver' , '--hostPID', tostring(pid) }
 }
 
--- for _, lsp in pairs(servers) do
---   require('lspconfig')[lsp].setup {
---     on_attach = on_attach,
---     flags = {
---       -- This will be the default in neovim 0.7+
---       debounce_text_changes = 150,
---     }
---   }
--- end
+lspconfig.clangd.setup{
+    on_attach = on_attach,
+}
 EOF
 
 set splitbelow
@@ -218,6 +204,7 @@ set autoindent
 set smartindent
 set fileformat=unix
 set encoding=utf-8
+set mouse=a
 
 "inoremap <silent> ,s <C-r>=CocActionAsync('showSignatureHelp')<CR>
 
@@ -231,6 +218,7 @@ nnoremap <leader>fs <cmd>Telescope lsp_dynamic_workspace_symbols<cr>
 nnoremap <leader>fr <cmd>Telescope lsp_references<cr>
 nnoremap <leader>fd <cmd>Telescope diagnostics<cr>
 nnoremap <leader>gd <cmd>Telescope lsp_definitions<cr>
+autocmd FileType cs nnoremap <leader>gd <cmd>lua require('omnisharp_extended').telescope_lsp_definitions()<cr>
 nnoremap <leader>gi <cmd>Telescope lsp_implementations<cr>
 nnoremap <leader>fe <cmd>Telescope resume<cr>
 
@@ -318,7 +306,7 @@ inoremap <expr> <M-,> pumvisible() ? '<C-n>' : '<C-x><C-o><C-n><C-p><C-r>=pumvis
 " run code
 "nnoremap \ :te<enter>
 "nnoremap <f6> <esc>:w<enter>:!g++ -std=c++11 %<enter>
-"tnoremap <Esc> <C-\><C-n>
+tnoremap <Esc> <C-\><C-n>
 
 " automatically enter insert mode on new neovim terminals
 "augroup terminal
