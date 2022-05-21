@@ -1,0 +1,10 @@
+alias lt='ls --human-readable --size -1 -S --classify'
+alias left='ls -t -1'
+alias count='find . -type f | wc -l'
+alias trash='mv --force -t ~/.local/share/Trash '
+alias gh='cd `git rev-parse --show-toplevel`'
+alias gs='git status'
+alias gw='git add -A && git commit -m "wip"'
+alias guw='git reset HEAD~'
+alias gc='git commit -m '
+
