@@ -7,4 +7,4 @@ alias gs='git status'
 alias gw='git add -A && git commit -m "wip"'
 alias guw='git reset HEAD~'
 alias gc='git commit -m '
-
+alias gl='git log --oneline'
