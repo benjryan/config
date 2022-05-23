@@ -1,3 +1,4 @@
+alias lsa='ls -a'
 alias lt='ls --human-readable --size -1 -S --classify'
 alias left='ls -t -1'
 alias count='find . -type f | wc -l'
