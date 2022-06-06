@@ -4,6 +4,10 @@ call plug#begin()
 "Plug 'sheerun/vim-polyglot'
 "Plug 'vim-syntastic/syntastic'
 "Plug 'jiangmiao/auto-pairs'
+Plug 'akinsho/toggleterm.nvim'
+Plug 'sainnhe/gruvbox-material'
+Plug 'fcpg/vim-fahrenheit'
+Plug 'sjl/badwolf'
 Plug 'nvim-lualine/lualine.nvim'
 Plug 'kyazdani42/nvim-web-devicons'
 Plug 'akinsho/bufferline.nvim'
@@ -20,6 +24,7 @@ Plug 'jesseleite/vim-agriculture'
 Plug 'neovim/nvim-lspconfig'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope.nvim'
+Plug 'jakemason/ouroboros'
 "Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'EdenEast/nightfox.nvim' 
 "Plug 'dense-analysis/ale'
@@ -32,7 +37,58 @@ nnoremap <silent><a-k> :BufferLineCycleNext<CR>
 nnoremap <silent><a-j> :BufferLineCyclePrev<CR>
 nnoremap <silent><a-w> :bd<CR>
 
+" ouroboros
+noremap <leader>sw :Ouroboros<CR>
+noremap <leader>sv :vsplit \| Ouroboros<CR>
+noremap <leader>sh :split \| Ouroboros<CR>
+
+setlocal autoindent
+setlocal cindent
+setlocal nospell
+" also handle lambda correctly, with namespace indent
+setlocal cino+=g-1,j1,(0,ws,Ws,N+s,t0,g0,+0
+
+set listchars=eol:¬,tab:>·,trail:~,extends:>,precedes:<,space:␣
+
+" Important!!
+if has('termguicolors')
+    set termguicolors
+endif
+" For dark version.
+set background=dark
+" For light version.
+"set background=light
+" Set contrast.
+" This configuration option should be placed before `colorscheme gruvbox-material`.
+" Available values: 'hard', 'medium'(default), 'soft'
+let g:gruvbox_material_background = 'hard'
+" For better performance
+let g:gruvbox_material_better_performance = 1
+let g:gruvbox_material_foreground = 'original'
+let g:gruvbox_material_statusline_style = 'default'
+"colorscheme gruvbox-material
+let g:gruvbox_contrast_dark = 'hard'
+colorscheme gruvbox
+
 lua <<EOF
+require("toggleterm").setup{
+    open_mapping = [[<leader>tt]],
+}
+
+local Terminal  = require('toggleterm.terminal').Terminal
+local lazygit = Terminal:new({
+  cmd = "lazygit",
+  dir = "git_dir",
+  direction = "float",
+  close_on_exit = true,
+})
+
+function _lazygit_toggle()
+  lazygit:toggle()
+end
+
+vim.api.nvim_set_keymap("n", "<leader>gg", "<cmd>lua _lazygit_toggle()<CR>", {noremap = true, silent = true})
+
 require('telescope').setup{
     defaults = {
         path_display = { tail = true },
@@ -61,33 +117,31 @@ require('telescope').setup{
 
 -- This function set the configuration of nightfox. If a value is not passed in the setup function
 -- it will be taken from the default configuration above
-require('nightfox').setup({
-  options = {
-      styles = {
-          comments = "NONE", -- change style of comments to be italic
-          keywords = "NONE", -- change style of keywords to be bold
-          functions = "NONE" -- styles can be a comma separated list
-      },
-      inverse = {
-          match_paren = false, -- inverse the highlighting of match_parens
-      },
-  },
-  palettes = {},
-  groups = {
-      all = {
-          Todo = { fg = "fg1", bg = "NONE" }, -- remove that bg changes on note/todo
-      },
-  },
-})
+--require('nightfox').setup({
+--  options = {
+--      styles = {
+--          comments = "NONE", -- change style of comments to be italic
+--          keywords = "NONE", -- change style of keywords to be bold
+--          functions = "NONE" -- styles can be a comma separated list
+--      },
+--      inverse = {
+--          match_paren = false, -- inverse the highlighting of match_parens
+--      },
+--  },
+--  palettes = {},
+--  groups = {
+--      all = {
+--          Todo = { fg = "fg1", bg = "NONE" }, -- remove that bg changes on note/todo
+--      },
+--  },
+--})
 EOF
-
-colorscheme nightfox
 
 lua <<EOF
 require('lualine').setup {
   options = {
     icons_enabled = true,
-    theme = 'nightfox',
+    theme = 'gruvbox-material',
     component_separators = { left = '', right = ''},
     section_separators = { left = '', right = ''},
     disabled_filetypes = {},
@@ -210,6 +264,7 @@ set mouse=a
 
 " Find files using Telescope command-line sugar.
 nnoremap <leader>ff <cmd>Telescope find_files<cr>
+nnoremap <leader>ft <cmd>Telescope find_files hidden=true<cr>
 nnoremap <leader>fc <cmd>Telescope current_buffer_fuzzy_find<cr>
 nnoremap <leader>fg <cmd>Telescope live_grep<cr>
 nnoremap <leader>fb <cmd>Telescope buffers<cr>

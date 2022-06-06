@@ -39,15 +39,18 @@
             "keys": "alt+shift+d"
         }
     ],
+    "alwaysShowTabs": false,
     "copyFormatting": "none",
     "copyOnSelect": false,
     "defaultProfile": "{0caa0dad-35be-5f56-a8ff-afceeeaa6101}",
+    "disableAnimations": true,
     "profiles": 
     {
         "defaults": 
         {
             "backgroundImageOpacity": 0.5,
-            "colorScheme": "Gruvbox Dark [Soft]",
+            "colorScheme": "Gruvbox Dark [Hard]",
+            "experimental.retroTerminalEffect": false,
             "font": 
             {
                 "face": "FiraCode NF",
@@ -196,7 +199,7 @@
             "yellow": "#D79921"
         },
         {
-            "background": "#192330",
+            "background": "#0E0F0F",
             "black": "#32302F",
             "blue": "#458588",
             "brightBlack": "#928374",
@@ -207,14 +210,14 @@
             "brightRed": "#FB4934",
             "brightWhite": "#EBDBB2",
             "brightYellow": "#FABD2F",
-            "cursorColor": "#4C5E78",
+            "cursorColor": "#627287",
             "cyan": "#689D6A",
-            "foreground": "#77869E",
+            "foreground": "#A3AEBF",
             "green": "#98971A",
             "name": "Gruvbox Dark [Soft]",
             "purple": "#B16286",
             "red": "#CC241D",
-            "selectionBackground": "#2D3C54",
+            "selectionBackground": "#4F5666",
             "white": "#A89984",
             "yellow": "#D79921"
         },
@@ -406,6 +409,6 @@
     "startOnUserLogin": false,
     "tabWidthMode": "titleLength",
     "theme": "system",
-    "useAcrylicInTabRow": true,
+    "useAcrylicInTabRow": false,
     "windowingBehavior": "useExisting"
 }
