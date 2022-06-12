@@ -10,7 +10,7 @@ Plug 'rafi/awesome-vim-colorschemes'
 Plug 'Hoffs/omnisharp-extended-lsp.nvim'
 Plug 'jesseleite/vim-agriculture'
 Plug 'neovim/nvim-lspconfig'
-Plug 'ray-x/lsp_signature.nvim'
+"Plug 'ray-x/lsp_signature.nvim'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope.nvim'
 Plug 'jakemason/ouroboros'
@@ -161,8 +161,8 @@ local on_attach = function(client, bufnr)
   --vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>', opts)
   vim.api.nvim_buf_set_keymap(bufnr, 'n', 'K', '<cmd>lua vim.lsp.buf.hover()<CR>', opts)
   --vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
-  --vim.api.nvim_buf_set_keymap(bufnr, 'n', '<C-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
-  --vim.api.nvim_buf_set_keymap(bufnr, 'i', '<C-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
+  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<C-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
+  vim.api.nvim_buf_set_keymap(bufnr, 'i', '<C-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
   vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>wa', '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', opts)
   vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>wr', '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>', opts)
   vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>wl', '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>', opts)
@@ -200,16 +200,16 @@ lspconfig.clangd.setup{
     capabilities = capabilities,
 }
 
-require "lsp_signature".setup({
-    bind = true, -- This is mandator, otherwise border config won't get registered.
-    handler_opts = {
-        border = "single"
-    },
-    always_trigger = false,
-    toggle_key = '<C-k>',
-    floating_window = false,
-    hint_enable = false
-})
+--require "lsp_signature".setup({
+--    bind = true, -- This is mandator, otherwise border config won't get registered.
+--    handler_opts = {
+--        border = "single"
+--    },
+--    always_trigger = false,
+--    toggle_key = '<C-k>',
+--    floating_window = false,
+--    hint_enable = false
+--})
 EOF
 
 set splitbelow
