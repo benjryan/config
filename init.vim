@@ -3,9 +3,9 @@ Plug 'akinsho/toggleterm.nvim'
 Plug 'sainnhe/gruvbox-material'
 Plug 'fcpg/vim-fahrenheit'
 Plug 'sjl/badwolf'
-Plug 'nvim-lualine/lualine.nvim'
+"Plug 'nvim-lualine/lualine.nvim'
 Plug 'kyazdani42/nvim-web-devicons'
-Plug 'akinsho/bufferline.nvim'
+"Plug 'akinsho/bufferline.nvim'
 Plug 'rafi/awesome-vim-colorschemes'
 Plug 'Hoffs/omnisharp-extended-lsp.nvim'
 Plug 'jesseleite/vim-agriculture'
@@ -15,22 +15,16 @@ Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope.nvim'
 Plug 'jakemason/ouroboros'
 Plug 'EdenEast/nightfox.nvim' 
+Plug 'CreaturePhil/vim-handmade-hero'
+Plug 'WhoIsSethDaniel/toggle-lsp-diagnostics.nvim'
 call plug#end()
 
-" These commands will navigate through buffers in order regardless of which mode you are using
-" e.g. if you change the order of buffers :bnext and :bprevious will not respect the custom ordering
-nnoremap <silent><a-k> :BufferLineCycleNext<CR>
-nnoremap <silent><a-j> :BufferLineCyclePrev<CR>
-nnoremap <silent><a-w> :bd<CR>
-
-" ouroboros
-noremap <leader>sw :Ouroboros<CR>
-noremap <leader>sv :vsplit \| Ouroboros<CR>
-noremap <leader>sh :split \| Ouroboros<CR>
-
+set cursorline
+set colorcolumn=80
 set autoindent
-set cindent
+set nocindent
 set nospell
+
 " also handle lambda correctly, with namespace indent
 set cino+=g-1,j1,(0,ws,Ws,N+s,t0,g0,+0
 
@@ -45,7 +39,8 @@ set background=dark
 " For light version.
 "set background=light
 " Set contrast.
-" This configuration option should be placed before `colorscheme gruvbox-material`.
+" This configuration option should be placed before `colorscheme
+" gruvbox-material`.
 " Available values: 'hard', 'medium'(default), 'soft'
 let g:gruvbox_material_background = 'hard'
 " For better performance
@@ -54,7 +49,81 @@ let g:gruvbox_material_foreground = 'original'
 let g:gruvbox_material_statusline_style = 'default'
 "colorscheme gruvbox-material
 let g:gruvbox_contrast_dark = 'hard'
-colorscheme gruvbox
+"colorscheme gruvbox
+colorscheme bryan-theme
+
+hi TabLineFill guibg=#ffffff
+
+syntax on
+set autoindent
+set nosmartindent
+set nocindent
+
+set completeopt=menuone,noinsert,noselect
+
+set splitbelow
+set splitright
+
+set foldmethod=indent
+set foldlevel=99
+
+" local nvimrc autoload
+set exrc
+
+set tabstop=4
+set softtabstop=4
+set shiftwidth=4
+set textwidth=80
+set expandtab
+set fileformat=unix
+set encoding=utf-8
+set mouse=a
+
+set laststatus=2
+set t_Co=256
+let $NVIM_TUI_ENABLE_TRUE_COLOR=1
+set background=dark
+
+set nu rnu
+set ruler
+set showcmd
+set noswapfile
+set noshowmode
+
+set backspace=indent,eol,start " let backspace delete over lines
+nnoremap fo :copen<CR>
+nnoremap fc :cclose<CR>
+
+set wildmenu
+set lazyredraw
+set showmatch
+set incsearch
+set hlsearch
+set hidden
+set nobackup
+set nowritebackup
+set cmdheight=2
+set updatetime=300
+set shortmess+=c
+
+" Always show the signcolumn, otherwise it would shift the text each time
+" diagnostics appear/become resolved.
+if has("nvim-0.5.0") || has("patch-8.1.1564")
+  " Recently vim can merge signcolumn and number column into one
+  set signcolumn=number
+else
+  set signcolumn=yes
+endif
+
+nnoremap <silent><a-k> :bn<CR>
+nnoremap <silent><a-j> :bp<CR>
+nnoremap <silent><a-w> :bd<CR>
+
+" ouroboros
+noremap <leader>sw :Ouroboros<CR>
+noremap <leader>sv :vsplit \| Ouroboros<CR>
+noremap <leader>sh :split \| Ouroboros<CR>
+
 
 lua <<EOF
 require("toggleterm").setup{
@@ -73,7 +142,8 @@ function _lazygit_toggle()
   lazygit:toggle()
 end
 
-vim.api.nvim_set_keymap("n", "<leader>gg", "<cmd>lua _lazygit_toggle()<CR>", {noremap = true, silent = true})
+vim.api.nvim_set_keymap("n", "<leader>gg", "<cmd>lua _lazygit_toggle()<CR>",
+                        {noremap = true, silent = true})
 
 require('telescope').setup{
     defaults = {
@@ -101,53 +171,63 @@ require('telescope').setup{
     },
 }
 
-require('lualine').setup {
-  options = {
-    icons_enabled = true,
-    theme = 'gruvbox-material',
-    component_separators = { left = '', right = ''},
-    section_separators = { left = '', right = ''},
-    disabled_filetypes = {},
-    always_divide_middle = true,
-  },
-  sections = {
-    lualine_a = {'mode'},
-    lualine_b = {'branch', 'diff', 'diagnostics'},
-    lualine_c = {'filename'},
-    lualine_x = {'encoding', 'fileformat', 'filetype'},
-    lualine_y = {'progress'},
-    lualine_z = {'location'}
-  },
-  inactive_sections = {
-    lualine_a = {},
-    lualine_b = {},
-    lualine_c = {'filename'},
-    lualine_x = {'location'},
-    lualine_y = {},
-    lualine_z = {}
-  },
-  tabline = {},
-  extensions = {}
-}
+--require('lualine').setup {
+--  options = {
+--    icons_enabled = true,
+--    --theme = 'gruvbox-material',
+--    theme = 'auto',
+--    component_separators = { left = '', right = ''},
+--    section_separators = { left = '', right = ''},
+--    disabled_filetypes = {},
+--    always_divide_middle = true,
+--  },
+--  sections = {
+--    lualine_a = {'mode'},
+--    lualine_b = {'branch', 'diff', 'diagnostics'},
+--    lualine_c = {'filename'},
+--    lualine_x = {'encoding', 'fileformat', 'filetype'},
+--    lualine_y = {'progress'},
+--    lualine_z = {'location'}
+--  },
+--  inactive_sections = {
+--    lualine_a = {},
+--    lualine_b = {},
+--    lualine_c = {'filename'},
+--    lualine_x = {'location'},
+--    lualine_y = {},
+--    lualine_z = {}
+--  },
+--  tabline = {},
+--  extensions = {}
+--}
 
-require('bufferline').setup {
-  options = {
-      diagnostics = "nvim_lsp",
-      show_close_icon = false,
-      show_buffer_close_icons = false,
-      right_mouse_command = "bdelete! %d", -- can be a string | function, see "Mouse actions"
-      left_mouse_command = "buffer %d",    -- can be a string | function, see "Mouse actions"
-      middle_mouse_command = nil,          -- can be a string | function, see "Mouse actions"
-  }
-}
+--require('bufferline').setup 
+--{
+--    options = 
+--    {
+--        diagnostics = "nvim_lsp",
+--        show_close_icon = false,
+--        show_buffer_close_icons = false,
+--        right_mouse_command = "bdelete! %d",
+--        left_mouse_command = "buffer %d",  
+--        middle_mouse_command = nil,
+--    }
+--}
 
 -- Mappings.
 -- See `:help vim.diagnostic.*` for documentation on any of the below functions
 local opts = { noremap=true, silent=true }
-vim.api.nvim_set_keymap('n', '<space>e', '<cmd>lua vim.diagnostic.open_float()<CR>', opts)
-vim.api.nvim_set_keymap('n', '[d', '<cmd>lua vim.diagnostic.goto_prev()<CR>', opts)
-vim.api.nvim_set_keymap('n', ']d', '<cmd>lua vim.diagnostic.goto_next()<CR>', opts)
-vim.api.nvim_set_keymap('n', '<space>q', '<cmd>lua vim.diagnostic.setloclist()<CR>', opts)
+vim.api.nvim_set_keymap('n', '<space>e', 
+                        '<cmd>lua vim.diagnostic.open_float()<CR>', opts)
+vim.api.nvim_set_keymap('n', '[d', 
+                        '<cmd>lua vim.diagnostic.goto_prev()<CR>', opts)
+vim.api.nvim_set_keymap('n', ']d', 
+                        '<cmd>lua vim.diagnostic.goto_next()<CR>', opts)
+vim.api.nvim_set_keymap('n', '<space>q', 
+                        '<cmd>lua vim.diagnostic.setloclist()<CR>', opts)
+
+require'toggle_lsp_diagnostics'.init({ start_on = false })
+vim.api.nvim_set_keymap('n', '<leader>tt', '<Plug>(toggle-lsp-diag)', opts)
 
 -- Use an on_attach function to only map the following keys
 -- after the language server attaches to the current buffer
@@ -177,12 +257,6 @@ end
 -- map buffer local keybindings when the language server attaches
 --local servers = { "omnisharp-roslyn" }
 
-local capabilities = vim.lsp.protocol.make_client_capabilities()
-capabilities.textDocument.completion.completionItem.snippetSupport = true
-capabilities.textDocument.completion.completionItem.resolveSupport = {
-  properties = { "documentation", "detail", "additionalTextEdits" },
-}
-
 local lspconfig = require('lspconfig')
 local omnisharp_bin = "c:/programs/omnisharp/OmniSharp.exe"
 lspconfig.omnisharp.setup {
@@ -192,12 +266,10 @@ lspconfig.omnisharp.setup {
         ["textDocument/definition"] = require('omnisharp_extended').handler,
     },
     cmd = { omnisharp_bin, '--languageserver' , '--hostPID', tostring(pid) },
-    capabilities = capabilities,
 }
 
 lspconfig.clangd.setup{
     on_attach = on_attach,
-    capabilities = capabilities,
 }
 
 --require "lsp_signature".setup({
@@ -211,31 +283,6 @@ lspconfig.clangd.setup{
 --    hint_enable = false
 --})
 EOF
-
-set splitbelow
-set splitright
-
-" Enable folding
-"set foldmethod=expr
-set foldmethod=indent
-"set foldexpr=nvim_treesitter#foldexpr()
-set foldlevel=99
-
-syntax on
-
-" local nvimrc autoload
-set exrc
-
-set tabstop=4
-set softtabstop=4
-set shiftwidth=4
-set textwidth=120
-set expandtab
-set autoindent
-set smartindent
-set fileformat=unix
-set encoding=utf-8
-set mouse=a
 
 " Find files using Telescope command-line sugar.
 nnoremap <leader>ff <cmd>Telescope find_files<cr>
@@ -252,42 +299,11 @@ autocmd FileType cs nnoremap <leader>gd <cmd>lua require('omnisharp_extended').t
 nnoremap <leader>gi <cmd>Telescope lsp_implementations<cr>
 nnoremap <leader>fe <cmd>Telescope resume<cr>
 
-set laststatus=2
-" set showtabline=2
-set t_Co=256
-set termguicolors
-let $NVIM_TUI_ENABLE_TRUE_COLOR=1
-set background=dark
-
-set nu rnu
-"set clipboard=unnamed
-set ruler
-set showcmd
-set noswapfile
-set noshowmode
-
-set backspace=indent,eol,start " let backspace delete over lines
-set autoindent
-set smartindent
-"set pastetoggle=<F2> " enable paste mode
-"nnoremap <expr> <c-/> empty(filter(getwininfo(), 'v:val.quickfix')) ? ':copen<CR>' : ':cclose<CR>'
-nnoremap fo :copen<CR>
-nnoremap fc :cclose<CR>
-
-set wildmenu
-set lazyredraw
-set showmatch
-set incsearch
-set hlsearch
-
 inoremap <C-e> <C-x><C-o>
 nnoremap <C-h> :noh<return>
 
 " search visually selected text
 vnoremap // y/\V<C-R>=escape(@",'/\')<CR><CR>
-
-" Set completeopt to have a better completion experience
-set completeopt=menuone,noinsert,noselect
 
 "set completeopt=noselect,longest,menuone
 "inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
@@ -307,36 +323,6 @@ tnoremap <Esc> <C-\><C-n>
 nnoremap <c-z> <nop>
 "nnoremap <C-p> :Files<Cr>
 "nnoremap <C-g> :RgRaw ""<Cr>
-
-" Set internal encoding of vim, not needed on neovim, since coc.nvim using some
-" unicode characters in the file autoload/float.vim
-set encoding=utf-8
-
-" TextEdit might fail if hidden is not set.
-set hidden
-
-" Some servers have issues with backup files, see #649.
-set nobackup
-set nowritebackup
-
-" Give more space for displaying messages.
-set cmdheight=2
-
-" Having longer updatetime (default is 4000 ms = 4 s) leads to noticeable
-" delays and poor user experience.
-set updatetime=300
-
-" Don't pass messages to |ins-completion-menu|.
-set shortmess+=c
-
-" Always show the signcolumn, otherwise it would shift the text each time
-" diagnostics appear/become resolved.
-if has("nvim-0.5.0") || has("patch-8.1.1564")
-  " Recently vim can merge signcolumn and number column into one
-  set signcolumn=number
-else
-  set signcolumn=yes
-endif
 
 " inverted cursor workaround for windows terminal
 if !empty($WT_SESSION)
