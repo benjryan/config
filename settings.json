@@ -55,7 +55,8 @@
             {
                 "face": "FiraCode Nerd Font",
                 "size": 11
-            }
+            },
+            "scrollbarState": "hidden"
         },
         "list": 
         [

@@ -59,6 +59,7 @@ set autoindent
 set nosmartindent
 set nocindent
 
+"set completeopt=menuone,noinsert,noselect
 set completeopt=menuone,noinsert,noselect
 
 set splitbelow
@@ -147,7 +148,7 @@ vim.api.nvim_set_keymap("n", "<leader>gg", "<cmd>lua _lazygit_toggle()<CR>",
 
 require('telescope').setup{
     defaults = {
-        path_display = { smart = true },
+        path_display = { tail = true },
     },
     pickers = {
         find_files = {
@@ -227,7 +228,7 @@ vim.api.nvim_set_keymap('n', '<space>q',
                         '<cmd>lua vim.diagnostic.setloclist()<CR>', opts)
 
 require'toggle_lsp_diagnostics'.init({ start_on = false })
-vim.api.nvim_set_keymap('n', '<leader>tt', '<Plug>(toggle-lsp-diag)', opts)
+vim.api.nvim_set_keymap('n', '<leader>dd', '<Plug>(toggle-lsp-diag)', opts)
 
 -- Use an on_attach function to only map the following keys
 -- after the language server attaches to the current buffer
@@ -295,7 +296,7 @@ nnoremap <leader>fs <cmd>Telescope lsp_dynamic_workspace_symbols<cr>
 nnoremap <leader>fr <cmd>Telescope lsp_references<cr>
 nnoremap <leader>fd <cmd>Telescope diagnostics<cr>
 nnoremap <leader>gd <cmd>Telescope lsp_definitions<cr>
-autocmd FileType cs nnoremap <leader>gd <cmd>lua require('omnisharp_extended').telescope_lsp_definitions()<cr>
+autocmd FileType cs nnoremap <buffer> <leader>gd <cmd>lua require('omnisharp_extended').telescope_lsp_definitions()<cr>
 nnoremap <leader>gi <cmd>Telescope lsp_implementations<cr>
 nnoremap <leader>fe <cmd>Telescope resume<cr>
 
