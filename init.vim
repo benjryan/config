@@ -17,6 +17,7 @@ Plug 'jakemason/ouroboros'
 Plug 'EdenEast/nightfox.nvim' 
 Plug 'CreaturePhil/vim-handmade-hero'
 Plug 'WhoIsSethDaniel/toggle-lsp-diagnostics.nvim'
+Plug 'benjryan/handmade-vim'
 call plug#end()
 
 set cursorline
@@ -50,7 +51,7 @@ let g:gruvbox_material_statusline_style = 'default'
 "colorscheme gruvbox-material
 let g:gruvbox_contrast_dark = 'hard'
 "colorscheme gruvbox
-colorscheme bryan-theme
+colorscheme handmade-vim
 
 hi TabLineFill guibg=#ffffff
 
