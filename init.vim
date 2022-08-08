@@ -3,7 +3,7 @@ Plug 'akinsho/toggleterm.nvim'
 Plug 'sainnhe/gruvbox-material'
 Plug 'fcpg/vim-fahrenheit'
 Plug 'sjl/badwolf'
-"Plug 'nvim-lualine/lualine.nvim'
+Plug 'nvim-lualine/lualine.nvim'
 Plug 'kyazdani42/nvim-web-devicons'
 "Plug 'akinsho/bufferline.nvim'
 Plug 'rafi/awesome-vim-colorschemes'
@@ -14,8 +14,6 @@ Plug 'neovim/nvim-lspconfig'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope.nvim'
 Plug 'jakemason/ouroboros'
-Plug 'EdenEast/nightfox.nvim' 
-Plug 'CreaturePhil/vim-handmade-hero'
 Plug 'WhoIsSethDaniel/toggle-lsp-diagnostics.nvim'
 Plug 'benjryan/handmade-vim'
 call plug#end()
@@ -73,10 +71,10 @@ set foldlevel=99
 set exrc
 
 set tabstop=4
-set softtabstop=4
-set shiftwidth=4
-set textwidth=80
+set softtabstop=-1 "will use tabstop value
+set shiftwidth=0   "will use tabstop value
 set expandtab
+set textwidth=80
 set fileformat=unix
 set encoding=utf-8
 set mouse=a
@@ -173,35 +171,44 @@ require('telescope').setup{
     },
 }
 
---require('lualine').setup {
---  options = {
---    icons_enabled = true,
---    --theme = 'gruvbox-material',
---    theme = 'auto',
---    component_separators = { left = '', right = ''},
---    section_separators = { left = '', right = ''},
---    disabled_filetypes = {},
---    always_divide_middle = true,
---  },
---  sections = {
---    lualine_a = {'mode'},
---    lualine_b = {'branch', 'diff', 'diagnostics'},
---    lualine_c = {'filename'},
---    lualine_x = {'encoding', 'fileformat', 'filetype'},
---    lualine_y = {'progress'},
---    lualine_z = {'location'}
---  },
---  inactive_sections = {
---    lualine_a = {},
---    lualine_b = {},
---    lualine_c = {'filename'},
---    lualine_x = {'location'},
---    lualine_y = {},
---    lualine_z = {}
---  },
---  tabline = {},
---  extensions = {}
---}
+require('lualine').setup {
+  options = {
+    icons_enabled = true,
+    --theme = 'gruvbox',
+    --theme = 'gruvbox-material',
+    theme = 'handmade-vim',
+    --theme = 'auto',
+    component_separators = { left = '', right = ''},
+    section_separators = { left = '', right = ''},
+    disabled_filetypes = {},
+    always_divide_middle = true,
+  },
+  sections = {
+    lualine_a = {'mode'},
+    lualine_b = {'branch', 'diff', 'diagnostics'},
+    lualine_c = {'filename'},
+    lualine_x = {'encoding', 'fileformat', 'filetype'},
+    lualine_y = {'progress'},
+    lualine_z = {'location'}
+  },
+  inactive_sections = {
+    lualine_a = {},
+    lualine_b = {},
+    lualine_c = {'filename'},
+    lualine_x = {'location'},
+    lualine_y = {},
+    lualine_z = {}
+  },
+  tabline = {
+    lualine_a = {'buffers'},
+    lualine_b = {},
+    lualine_c = {},
+    lualine_x = {},
+    lualine_y = {},
+    lualine_z = {}
+  },
+  extensions = {}
+}
 
 --require('bufferline').setup 
 --{
