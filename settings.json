@@ -12,6 +12,15 @@
             "keys": "alt+shift+l"
         },
         {
+            "command": 
+            {
+                "action": "splitPane",
+                "split": "auto",
+                "splitMode": "duplicate"
+            },
+            "keys": "alt+shift+d"
+        },
+        {
             "command": "unbound",
             "keys": "ctrl+v"
         },
@@ -66,6 +75,25 @@
         {
             "command": 
             {
+                "action": "resizePane",
+                "direction": "left"
+            },
+            "keys": "ctrl+alt+h"
+        },
+        {
+            "command": 
+            {
+                "action": "resizePane",
+                "direction": "up"
+            },
+            "keys": "ctrl+alt+k"
+        },
+        {
+            "command": "paste"
+        },
+        {
+            "command": 
+            {
                 "action": "moveFocus",
                 "direction": "up"
             },
@@ -79,7 +107,8 @@
             }
         },
         {
-            "command": "paste"
+            "command": "toggleSplitOrientation",
+            "keys": "alt+shift+t"
         },
         {
             "command": 
@@ -88,19 +117,6 @@
                 "direction": "right"
             },
             "keys": "ctrl+alt+l"
-        },
-        {
-            "command": 
-            {
-                "action": "splitPane",
-                "split": "auto",
-                "splitMode": "duplicate"
-            },
-            "keys": "alt+shift+d"
-        },
-        {
-            "command": "toggleSplitOrientation",
-            "keys": "alt+shift+t"
         },
         {
             "command": 
@@ -129,26 +145,10 @@
         {
             "command": 
             {
-                "action": "resizePane",
-                "direction": "left"
-            },
-            "keys": "ctrl+alt+h"
-        },
-        {
-            "command": 
-            {
                 "action": "moveFocus",
                 "direction": "down"
             },
             "keys": "alt+shift+j"
-        },
-        {
-            "command": 
-            {
-                "action": "resizePane",
-                "direction": "up"
-            },
-            "keys": "ctrl+alt+k"
         }
     ],
     "alwaysShowTabs": false,
@@ -162,14 +162,15 @@
         "defaults": 
         {
             "backgroundImageOpacity": 0.5,
-            "colorScheme": "Gruvbox Dark [Hard]",
-            "experimental.retroTerminalEffect": false,
+            "colorScheme": "Gruvbox Dark",
+            "cursorShape": "bar",
             "font": 
             {
-                "face": "FiraCode NF",
-                "size": 11
+                "face": "Liberation Mono"
             },
-            "scrollbarState": "hidden"
+            "padding": "0",
+            "scrollbarState": "hidden",
+            "useAtlasEngine": true
         },
         "list": 
         [
@@ -180,6 +181,8 @@
                 "name": "Windows PowerShell"
             },
             {
+                "bellStyle": "none",
+                "cursorShape": "filledBox",
                 "guid": "{0caa0dad-35be-5f56-a8ff-afceeeaa6101}",
                 "hidden": false,
                 "name": "Command Prompt"
@@ -253,7 +256,7 @@
             "brightRed": "#FB4934",
             "brightWhite": "#EBDBB2",
             "brightYellow": "#FABD2F",
-            "cursorColor": "#EBDBB2",
+            "cursorColor": "#298026",
             "cyan": "#689D6A",
             "foreground": "#EBDBB2",
             "green": "#98971A",
@@ -498,6 +501,7 @@
     "startOnUserLogin": false,
     "tabWidthMode": "titleLength",
     "theme": "system",
+    "themes": [],
     "useAcrylicInTabRow": false,
     "windowingBehavior": "useNew"
 }
