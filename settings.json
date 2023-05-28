@@ -166,9 +166,9 @@
             "cursorShape": "bar",
             "font": 
             {
-                "face": "Liberation Mono"
+                "face": "Liberation Mono for Powerline"
             },
-            "padding": "0",
+            "padding": "8",
             "scrollbarState": "hidden",
             "useAtlasEngine": true
         },
