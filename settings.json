@@ -12,6 +12,15 @@
             "keys": "alt+shift+l"
         },
         {
+            "command": 
+            {
+                "action": "splitPane",
+                "split": "auto",
+                "splitMode": "duplicate"
+            },
+            "keys": "alt+shift+d"
+        },
+        {
             "command": "unbound",
             "keys": "ctrl+v"
         },
@@ -60,13 +69,8 @@
             "keys": "alt+shift+down"
         },
         {
-            "command": 
-            {
-                "action": "splitPane",
-                "split": "auto",
-                "splitMode": "duplicate"
-            },
-            "keys": "alt+shift+d"
+            "command": "find",
+            "keys": "ctrl+shift+f"
         },
         {
             "command": 
@@ -75,18 +79,6 @@
                 "direction": "left"
             },
             "keys": "ctrl+alt+h"
-        },
-        {
-            "command": "find",
-            "keys": "ctrl+shift+f"
-        },
-        {
-            "command": 
-            {
-                "action": "moveFocus",
-                "direction": "up"
-            },
-            "keys": "alt+shift+k"
         },
         {
             "command": 
@@ -102,9 +94,21 @@
         {
             "command": 
             {
+                "action": "moveFocus",
+                "direction": "up"
+            },
+            "keys": "alt+shift+k"
+        },
+        {
+            "command": 
+            {
                 "action": "copy",
                 "singleLine": false
             }
+        },
+        {
+            "command": "toggleSplitOrientation",
+            "keys": "alt+shift+t"
         },
         {
             "command": 
@@ -113,10 +117,6 @@
                 "direction": "right"
             },
             "keys": "ctrl+alt+l"
-        },
-        {
-            "command": "toggleSplitOrientation",
-            "keys": "alt+shift+t"
         },
         {
             "command": 
@@ -166,7 +166,7 @@
             "cursorShape": "bar",
             "font": 
             {
-                "face": "Liberation Mono for Powerline"
+                "face": "LiterationMono Nerd Font"
             },
             "padding": "8",
             "scrollbarState": "hidden",
