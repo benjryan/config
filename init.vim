@@ -14,6 +14,7 @@ Plug 'nvim-telescope/telescope.nvim'
 Plug 'jakemason/ouroboros'
 Plug 'WhoIsSethDaniel/toggle-lsp-diagnostics.nvim'
 Plug 'benjryan/handmade-vim'
+Plug 'ziglang/zig.vim'
 call plug#end()
 
 set cursorline
@@ -22,8 +23,10 @@ set autoindent
 set nocindent
 set nospell
 
+let g:zig_fmt_autosave = 0
+
 " also handle lambda correctly, with namespace indent
-"set cino+=g-1,j1,(0,ws,Ws,N+s,t0,g0,+0
+set cino+=g-1,j1,(0,ws,Ws,N+s,t0,g0,+0
 
 set listchars=eol:¬,tab:>·,trail:~,extends:>,precedes:<,space:␣
 
@@ -72,7 +75,7 @@ set tabstop=4
 set softtabstop=-1 "will use tabstop value
 set shiftwidth=0   "will use tabstop value
 set expandtab
-set textwidth=80
+set textwidth=0
 set fileformat=unix
 set encoding=utf-8
 set mouse=a
@@ -100,7 +103,7 @@ set hlsearch
 set hidden
 set nobackup
 set nowritebackup
-set cmdheight=2
+set cmdheight=0
 set updatetime=300
 set shortmess+=c
 
@@ -116,6 +119,14 @@ endif
 nnoremap <silent><a-k> :bn<CR>
 nnoremap <silent><a-j> :bp<CR>
 nnoremap <silent><a-w> :bd<CR>
+
+" quickfix
+nnoremap [q :cprev<CR>
+nnoremap ]q :cnext<CR>
+nnoremap [Q :cfirst<CR>
+nnoremap ]Q :clast<CR>
+nnoremap <c-q><c-q> :copen<CR>
+nnoremap <c-q><c-w> :cclose<CR>
 
 " ouroboros
 noremap <leader>sw :Ouroboros<CR>
@@ -213,7 +224,8 @@ nnoremap <Esc> :noh<CR>
 lua <<EOF
 require('telescope').setup{
     defaults = {
-        path_display = { truncate = true },
+        --path_display = { truncate = true }, -- path
+        path_display = { tail = true }, -- filename only
         layout_strategy = "bottom_pane",
         borderchars = { " ", " ", " ", " ", " ", " ", " ", " ", }
     },
@@ -225,6 +237,7 @@ require('lualine').setup {
     --theme = 'gruvbox',
     --theme = 'gruvbox-material',
     theme = 'handmade-vim',
+    --theme = '16color',
     --theme = 'auto',
     component_separators = { left = '', right = ''},
     section_separators = { left = '', right = ''},
@@ -298,17 +311,20 @@ local on_attach = function(client, bufnr)
 end
 
 local lspconfig = require('lspconfig')
-local omnisharp_bin = "c:/programs/omnisharp/omnisharp.exe"
 lspconfig.omnisharp.setup {
     on_attach = on_attach,
     flags = { debounce_text_changes = 150 },
     handlers = {
         ["textdocument/definition"] = require('omnisharp_extended').handler,
     },
-    cmd = { omnisharp_bin, '--languageserver' , '--hostpid', tostring(pid) },
+    cmd = { "omnisharp.exe", '--languageserver' , '--hostpid', tostring(pid) },
 }
 
 lspconfig.clangd.setup{
+    on_attach = on_attach,
+}
+
+lspconfig.zls.setup{
     on_attach = on_attach,
 }
 

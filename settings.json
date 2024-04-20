@@ -21,6 +21,18 @@
             "keys": "alt+shift+d"
         },
         {
+            "command": "find",
+            "keys": "ctrl+shift+f"
+        },
+        {
+            "command": 
+            {
+                "action": "resizePane",
+                "direction": "left"
+            },
+            "keys": "ctrl+alt+h"
+        },
+        {
             "command": "unbound",
             "keys": "ctrl+v"
         },
@@ -67,18 +79,6 @@
         {
             "command": "unbound",
             "keys": "alt+shift+down"
-        },
-        {
-            "command": "find",
-            "keys": "ctrl+shift+f"
-        },
-        {
-            "command": 
-            {
-                "action": "resizePane",
-                "direction": "left"
-            },
-            "keys": "ctrl+alt+h"
         },
         {
             "command": 
@@ -157,6 +157,12 @@
     "defaultProfile": "{0caa0dad-35be-5f56-a8ff-afceeeaa6101}",
     "disableAnimations": true,
     "firstWindowPreference": "defaultProfile",
+    "newTabMenu": 
+    [
+        {
+            "type": "remainingProfiles"
+        }
+    ],
     "profiles": 
     {
         "defaults": 
@@ -164,12 +170,19 @@
             "backgroundImageOpacity": 0.5,
             "colorScheme": "Gruvbox Dark [Hard]",
             "cursorShape": "bar",
+            "experimental.retroTerminalEffect": false,
             "font": 
             {
-                "face": "LiterationMono Nerd Font"
+                "face": "LiterationMono Nerd Font Mono",
+                "features": 
+                {
+                    "calt": 0
+                },
+                "size": 12.0
             },
-            "padding": "8",
+            "padding": "4",
             "scrollbarState": "hidden",
+            "startingDirectory": "./",
             "useAtlasEngine": true
         },
         "list": 
@@ -195,21 +208,50 @@
                 "source": "Windows.Terminal.Azure"
             },
             {
-                "guid": "{51855cb2-8cce-5362-8f54-464b92b32386}",
-                "hidden": false,
-                "name": "Ubuntu",
-                "source": "CanonicalGroupLimited.Ubuntu_79rhkp1fndgsc"
+                "guid": "{16208362-94fc-5b1f-a491-5b2624d5ab56}",
+                "hidden": true,
+                "name": "Visual Studio Debug Console",
+                "source": "VSDebugConsole"
             },
             {
-                "guid": "{2c4de342-38b7-51cf-b940-2309a097f518}",
-                "hidden": true,
-                "name": "Ubuntu",
-                "source": "Windows.Terminal.Wsl"
+                "guid": "{699ea89b-8a95-5646-b76c-80e05be794f2}",
+                "hidden": false,
+                "name": "Developer Command Prompt for VS 2022",
+                "source": "Windows.Terminal.VisualStudio"
+            },
+            {
+                "guid": "{d3945aae-0ed3-54ed-af5e-33464f3ee691}",
+                "hidden": false,
+                "name": "Developer PowerShell for VS 2022",
+                "source": "Windows.Terminal.VisualStudio"
             }
         ]
     },
     "schemes": 
     [
+        {
+            "background": "#0000A4",
+            "black": "#4F4F4F",
+            "blue": "#96CBFE",
+            "brightBlack": "#7C7C7C",
+            "brightBlue": "#B5DCFF",
+            "brightCyan": "#DFDFFE",
+            "brightGreen": "#CEFFAC",
+            "brightPurple": "#FF9CFE",
+            "brightRed": "#FFB6B0",
+            "brightWhite": "#FFFFFF",
+            "brightYellow": "#FFFFCC",
+            "cursorColor": "#FFA560",
+            "cyan": "#C6C5FE",
+            "foreground": "#FFFF4E",
+            "green": "#A8FF60",
+            "name": "Borland",
+            "purple": "#FF73FD",
+            "red": "#FF6C60",
+            "selectionBackground": "#A4A4A4",
+            "white": "#EEEEEE",
+            "yellow": "#FFFFB6"
+        },
         {
             "background": "#0C0C0C",
             "black": "#0C0C0C",
@@ -293,7 +335,7 @@
             "brightYellow": "#FABD2F",
             "cursorColor": "#35B132",
             "cyan": "#689D6A",
-            "foreground": "#7D7D7D",
+            "foreground": "#A3A3A3",
             "green": "#98971A",
             "name": "Gruvbox Dark [Hard]",
             "purple": "#B16286",
